@@ -1,6 +1,0 @@
-{
-	"character_slot126_peelout_0":  { "File": "character_silver_peelout.bmp", "Rect": "0,0,41,40", "Center": "20,20" },
-	"character_slot126_peelout_1":  { "File": "character_silver_peelout.bmp", "Rect": "41,0,41,40", "Center": "19,20" },
-	"character_slot126_peelout_2":  { "File": "character_silver_peelout.bmp", "Rect": "82,0,39,40", "Center": "18,20" },
-	"character_slot126_peelout_3":  { "File": "character_silver_peelout.bmp", "Rect": "0,0,41,40", "Center": "20,20" }
-}
