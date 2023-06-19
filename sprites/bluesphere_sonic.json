@@ -2,12 +2,12 @@
 	"bluesphere_slot126_0x01":  { "File": "bluesphere_silver.bmp", "Rect": "0,8,39,55", "Center": "19,42" },
 	"bluesphere_slot126_0x02":  { "File": "bluesphere_silver.bmp", "Rect": "42,4,41,62", "Center": "20,46" },
 	"bluesphere_slot126_0x03":  { "File": "bluesphere_silver.bmp", "Rect": "86,8,41,58", "Center": "20,42" },
-	"bluesphere_slot126_0x04":  { "File": "bluesphere_silver.bmp", "Rect": "129,4,41,62", "Center": "20,46" },
-	"bluesphere_slot126_0x05":  { "File": "bluesphere_silver.bmp", "Rect": "173,8,41,58", "Center": "20,42" },
-	"bluesphere_slot126_0x06":  { "File": "bluesphere_silver.bmp", "Rect": "217,4,41,62", "Center": "20,46" },
-	"bluesphere_slot126_0x07":  { "File": "bluesphere_silver.bmp", "Rect": "261,5,41,61", "Center": "20,45" },
+	"bluesphere_slot126_0x04":  { "File": "bluesphere_silver.bmp", "Rect": "42,4,41,62", "Center": "20,46" },
+	"bluesphere_slot126_0x05":  { "File": "bluesphere_silver.bmp", "Rect": "86,8,41,58", "Center": "20,42" },
+	"bluesphere_slot126_0x06":  { "File": "bluesphere_silver.bmp", "Rect": "42,4,41,62", "Center": "20,46" },
+	"bluesphere_slot126_0x07":  { "File": "bluesphere_silver.bmp", "Rect": "86,8,41,58", "Center": "20,42" },
 	"bluesphere_slot126_0x08":  { "File": "bluesphere_silver.bmp", "Rect": "42,4,41,62", "Center": "20,46" },
 	"bluesphere_slot126_0x09":  { "File": "bluesphere_silver.bmp", "Rect": "306,26,31,32", "Center": "15,23" },
 	"bluesphere_slot126_0x0a":  { "File": "bluesphere_silver.bmp", "Rect": "339,26,28,32", "Center": "13,23" },
-	"bluesphere_slot126_0x0b":  { "File": "bluesphere_silver.bmp", "Rect": "372,27,26,30", "Center": "12,22" }
+	"bluesphere_slot126_0x0b":  { "File": "bluesphere_silver.bmp", "Rect": "372,27,26,30", "Center": "12,22" },
 }
