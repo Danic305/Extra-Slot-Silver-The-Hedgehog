@@ -1,0 +1,283 @@
+global u8 HoverTimer
+function bool Character.updateSuperPeelout()
+{
+    if (global.xtrachar == 126 && char.character == CHARACTER_SONIC)
+        return false
+
+    return base.Character.updateSuperPeelout()
+}
+
+function string ExtraChar.getCharacterName(u8 xtrachar)
+{
+    if (xtrachar == 126)
+        return "Silver"
+        
+        return base.ExtraChar.getCharacterName(xtrachar)
+}
+function string getESCharacterFallSpriteKey(u8 character, u8 extrachar)
+{
+	if (extrachar == 126 && character == CHARACTER_SONIC)
+	{
+		return "silver_falling_anim_0%d"
+	}
+	return base.getESCharacterFallSpriteKey(character, extrachar)
+}
+
+
+function void SilverPressedJumpInMidAir()
+{
+      // Remove control lock
+    char.flags &= ~char.flag.CONTROL_LOCK
+#if STANDALONE
+    char.double_jump_state = 1   // Always set this flag; needed for Drop Dash
+#endif
+    
+	
+if (control.player1.state) //Double Jump
+    {
+        char.velocity.y = 0
+	}
+	push(true)	
+}
+
+function void Character.updateJumpMoves()
+{
+        if (global.xtrachar != 126)
+        {
+             base.Character.updateJumpMoves()
+             return
+        }
+	u8 input_state     = (char.character == CHARACTER_TAILS) ? control.tails.state   : control.player1.state
+	u8 input_pressed   = (char.character == CHARACTER_TAILS) ? control.tails.pressed : control.player1.pressed
+	bool isSuperActive = (char.character == CHARACTER_TAILS) ? super.active.tails    : super.active
+
+	if (char.jumping)
+	{
+		// Limit velocity.y
+		s16 max_vy = (char.flags & char.flag.UNDERWATER) ? -0x200 : -0x400
+		if (char.velocity.y < max_vy)
+		{
+			// Limit vertical velocity while not pressing any jump button
+			//  -> This is important to support low jumps by just tapping the button briefly
+			if ((input_state & CONTROL_ABC) == 0)
+			{
+				char.velocity.y = max_vy
+			}
+		}
+		else
+		{
+			if (char.double_jump_state == 0)
+			{
+				#if STANDALONE
+					if (Input.buttonPressed(BUTTON_Y))
+					{
+						if (!isSuperActive && char.invuln.countdown == 0)	// Check invulnerability to prevent spamming of super activate + cancel
+						{
+							if (Character.performSuperTransformation())
+								return
+						}
+					}
+				#endif
+
+				// Check if pressed jump again in mid-air
+				if (input_pressed & CONTROL_A ||input_pressed & CONTROL_B)
+				{
+				#if STANDALONE
+					// Check for other things to do instead of the usual reaction to jump button pressed
+					if (onCharacterPressedJumpInMidAir(input_state, input_pressed))
+				#endif
+					{
+						if (char.character == CHARACTER_SONIC) && (XtraChar != 126)
+						{
+							SonicPressedJumpInMidAir()
+						}
+						else if (char.character == CHARACTER_TAILS)
+						{
+							TailsPressedJumpInMidAir()
+						}
+						else if (XtraChar == 126)
+						{
+							SilverPressedJumpInMidAir()
+						}
+						else if (!competition_mode.active)
+						{
+							KnucklesPressedJumpInMidAir()
+						}
+						else
+						{
+							// Knuckles behaves just like Sonic in competition mode
+							SonicPressedJumpInMidAir()
+						}
+					}
+				}
+			}
+
+		#if STANDALONE
+			if (XtraChar == 126 && !competition_mode.active)
+			{
+				// Handle drop dash
+				//  -> Can only be charged if there is no shield active (only exception: drop dash charge started already, when shield gets active -- this reflects Sonic Mania's behavior)
+				//  -> But can be charged if invincible (incl. Super / Hyper Sonic)
+				bool chargeDropDash = (control.player1.state & CONTROL_A||control.player1.state & CONTROL_B) && char.double_jump_state && HoverTimer < 100
+                                bool HoverTimer = 0
+				if (chargeDropDash)
+				{
+					if (sonic.dropdash_counter < DROPDASH_FULLCHARGE)
+					{
+						// Drop dash charging
+						++sonic.dropdash_counter
+                                                char.velocity.y = 0
+						if (sonic.dropdash_counter == DROPDASH_FULLCHARGE)
+						{
+							// Fully charged now
+							char.state = char.state.SONIC_DROPDASH
+                                                        char.velocity.y = 0
+							Audio.playAudio("dropdash_charge", AudioContext.CONTEXT_SOUND)
+						}
+					}
+					Input.setControllerRumbleByAddress(A0, 0.0f, 0.25f, 100)
+                                        char.velocity.y = 0
+                                        ++HoverTimer
+				}
+				else if (sonic.dropdash_counter > 0)
+				{
+					// Abort drop dash
+					sonic.dropdash_counter = 0
+					char.state = char.state.ROLLING
+                                        char.jumping = 0
+                                        char.double_jump_state = 0
+                                        HoverTimer = 0
+				}
+			}
+		#endif
+		}
+	}
+	else
+	{
+		if (char.spindash == 0)
+		{
+			char.velocity.y = max(char.velocity.y, -0x0fc0)
+		}
+	}
+}
+
+function void releaseDropDash()
+{
+	if (global.xtrachar == 126 && char.character == CHARACTER_SONIC)
+        {
+		HoverTimer = 0
+        }
+
+        else
+        {
+
+	base.releaseDropDash()
+        }
+}
+
+function bool Character.CheckStartJump()´
+{
+{
+if (global.xtrachar != 126 && char.character == CHARACTER_SONIC)
+		return base.Character.CheckStartJump()	
+        }
+	u8 input_pressed = (char.character == CHARACTER_TAILS) ? control.tails.pressed : control.player1.pressed
+	if ((input_pressed & CONTROL_A||input_pressed & CONTROL_B) == 0)
+		return false
+
+	D0 = char.rotation
+	if (global.inv_gravity)
+	{
+		D0.s8 = -D0.s8
+	}
+	else
+	{
+		D0.s8 += 0x80
+	}
+
+	pushA456()
+	fn00f72e()
+	popA456()
+
+	if (D1.s16 < 6)
+		return false
+
+	// Get jump acceleration depending on character
+	u16 acceleration
+	if (char.character != CHARACTER_KNUCKLES || competition_mode.active)
+	{
+		if (char.flags & char.flag.UNDERWATER)
+		{
+			acceleration = 0x380
+		}
+		else if (super.active && char.character == CHARACTER_SONIC)
+		{
+			acceleration = 0x800
+		}
+		else
+		{
+			acceleration = 0x680
+		}
+	}
+	else
+	{
+		if (char.flags & char.flag.UNDERWATER)
+		{
+			acceleration = 0x300
+		}
+		else
+		{
+			acceleration = 0x600
+		}
+	}
+
+	u8 angle = char.rotation - 0x40
+	s32 accel_x = (s32(lookupCos(angle)) * acceleration) >> 8
+	s32 accel_y = (s32(lookupSin(angle)) * acceleration) >> 8
+
+	char.velocity.x += accel_x
+	char.velocity.y += accel_y
+
+	char.flags |= char.flag.IN_AIR
+	char.flags &= ~char.flag.PUSHING
+
+	char.jumping = 1
+	char.on_convex_surface = 0
+
+	playSound(SFX_JUMP)
+
+	// Start roll jump
+	if (char.flags & char.flag.ROLLING)
+	{
+	#if STANDALONE
+		if (!Game.getSetting(SETTING_NO_CONTROL_LOCK))
+	#endif
+		{
+			char.hitbox_extends.x = char.hitbox.default.x
+			char.hitbox_extends.y = char.hitbox.default.y
+			char.flags |= char.flag.CONTROL_LOCK
+		}
+	}
+	else
+	{
+		char.hitbox_extends.x = char.hitbox.x.ROLLING
+		char.hitbox_extends.y = char.hitbox.y.ROLLING
+		char.flags |= char.flag.ROLLING
+		char.state = char.state.ROLLING
+
+		s8 dy = s8(char.hitbox_extends.y) - s8(char.hitbox.default.y)
+		char.position.y.u16 += global.inv_gravity ? dy : -dy
+
+	#if STANDALONE
+		// Glitch fix for Knuckles being unable to jump off underwater objects
+		//  -> Move him up a single pixel up so he won't stick to objects
+		// TODO: Does not work for the HCZ snake platforms
+		if (acceleration <= 0x300 && (char.flags & char.flag.ON_OBJECT))
+		{
+			--char.position.y.u16
+		}
+	#endif
+	}
+	return true
+}
+
