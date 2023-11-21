@@ -1,9 +1,0 @@
-{
-	//for extra save slots
-	"ESS_Char_Es126":  { "File": "dataSel_silver.png", "Rect": "0,0,40,54", "Center": "21,46" },
-	"ESS_Life_Es126":  { "File": "dataSel.png", "Rect": "2,4,16,16", "Center": "8,16" },
-	"ESS_Cont_Es126":  { "File": "dataSel.png", "Rect": "0,20,23,30", "Center": "11,27" },
-	"ESS_Zone_Es126_0":  { "File": "portraits.png", "Rect": "0,0,80,56", "Center": "40,28"},
-	"ESS_Zone_Es126_1":  { "File": "portraits.png", "Rect": "0,80,80,56", "Center": "40,28" },
-	"ESS_Zone_Es126_2":  { "File": "Finished.png", "Rect": "0,0,80,56", "Center": "40,28" },
-}
