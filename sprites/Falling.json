@@ -1,0 +1,6 @@
+{
+	"silver_falling_anim_00":  { "File": "Falling.bmp", "Rect": "9,11,32,46", "Center": "15,25" },
+	"silver_falling_anim_01":  { "File": "Falling.bmp", "Rect": "52,11,32,46", "Center": "15,25" },
+	"character_slot126_dropdash_0":  { "File": "character_silver.bmp", "Rect": "294,679,37,39", "Center": "19,21" },
+	"character_slot126_dropdash_1":  { "File": "character_silver.bmp", "Rect": "350,679,37,39", "Center": "19,21" },
+}
